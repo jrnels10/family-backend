@@ -6,9 +6,11 @@ import { RecipesRepository } from './recipes.repository';
 @Injectable()
 export class RecipesService {
   constructor(private readonly recipeRepository: RecipesRepository) {}
-  async create(createRecipeDto: CreateRecipeDto) {
-    console.log(createRecipeDto);
-    return await this.recipeRepository.createNewRecipe(createRecipeDto);
+  async create(createRecipeDto: CreateRecipeDto, auth0Id: string) {
+    return await this.recipeRepository.createNewRecipe(
+      createRecipeDto,
+      auth0Id,
+    );
   }
 
   findAll() {

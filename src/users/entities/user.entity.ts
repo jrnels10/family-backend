@@ -1,4 +1,5 @@
 import { Recipe } from 'src/recipes/entities/recipe.entity';
+import { Favorite } from 'src/favorite/entities/favorite.entity';
 import { Column, OneToMany, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -10,12 +11,14 @@ export class User {
   auth0Id: string;
 
   @Column({
-    name: 'email_address',
     nullable: false,
     default: '',
   })
   email: string;
 
-  @OneToMany(() => Recipe, (recipe) => recipe.user_id, { eager: true })
+  @OneToMany(() => Recipe, (recipe) => recipe.user_id)
   recipes: Recipe[];
+
+  // @OneToMany(() => Favorite, (favorite) => favorite.user)
+  // favorite: Favorite[];
 }

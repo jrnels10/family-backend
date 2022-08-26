@@ -12,13 +12,14 @@ export class RecipesRepository extends Repository<Recipe> {
     return 'string';
   }
 
-  async createNewRecipe(createRecipeDto: CreateRecipeDto) {
-    const { title, duration, description } = createRecipeDto;
-    const queryParams = [title, duration, description];
-    const queryString = `INSERT INTO public.recipe(title, duration,description)
-          VALUES($1,$2,$3)`;
-    const res = await this.query(queryString, queryParams);
-    console.log(res);
-    return res;
+  async createNewRecipe(createRecipeDto: CreateRecipeDto, auth0Id: string) {
+    return await this.createQueryBuilder()
+      .insert()
+      .into(Recipe)
+      .values([{ ...createRecipeDto, user_id: auth0Id }])
+      .returning('id')
+      .execute();
   }
+
+  getRecipeById;
 }

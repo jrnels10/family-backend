@@ -13,28 +13,30 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthorizationGuard } from 'src/authorization/authorization.guard';
+import { GetUser } from './get-user.decorator';
+import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(AuthorizationGuard)
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  create(@GetUser() user, @Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto, user.sub);
   }
 
   @UseGuards(AuthorizationGuard)
   @Get()
   findAll() {
-    console.log('test');
     return this.usersService.findAll();
   }
 
   @UseGuards(AuthorizationGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    console.log('test');
-    return this.usersService.findOne(id);
+  findOne(@GetUser() user) {
+    console.log('controller', user);
+    return this.usersService.findOne(user.sub);
   }
 
   @Patch(':id')

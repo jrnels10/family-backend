@@ -14,6 +14,10 @@ import { UsersModule } from './users/users.module';
 import { UsersController } from './users/users.controller';
 import { UsersService } from './users/users.service';
 import { UsersRepository } from './users/users.repository';
+import { User } from './users/entities/user.entity';
+import { Recipe } from './recipes/entities/recipe.entity';
+import { FavoriteModule } from './favorite/favorite.module';
+import { Favorite } from './favorite/entities/favorite.entity';
 
 @Module({
   imports: [
@@ -35,8 +39,9 @@ import { UsersRepository } from './users/users.repository';
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([RecipesRepository, UsersRepository]),
+    TypeOrmModule.forFeature([Recipe, User, Favorite]),
     DatabaseModule,
+    FavoriteModule,
   ],
   controllers: [AppController, UsersController, RecipesController],
   providers: [AppService, RecipesService, UsersService, RecipesRepository],

@@ -2,24 +2,28 @@ import { User } from './../../users/entities/user.entity';
 import {
   Column,
   Entity,
+  OneToOne,
   BaseEntity,
-  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Favorite } from 'src/favorite/entities/favorite.entity';
 
 @Entity()
 export class Recipe extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.recipes, { eager: false })
+  @OneToMany(() => User, (user) => user.auth0Id)
   @Column()
   user_id: string;
 
   @Column()
   title: string;
+
   @Column()
   duration: string;
-  @Column()
+
+  @Column({ nullable: true })
   description: string;
 }

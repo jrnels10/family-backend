@@ -12,6 +12,7 @@ import { RecipesService } from './recipes.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { AuthorizationGuard } from '../authorization/authorization.guard';
+import { GetUser } from 'src/users/get-user.decorator';
 
 @Controller('recipes')
 export class RecipesController {
@@ -19,8 +20,8 @@ export class RecipesController {
 
   @UseGuards(AuthorizationGuard)
   @Post()
-  create(@Body() createRecipeDto: CreateRecipeDto) {
-    return this.recipesService.create(createRecipeDto);
+  create(@GetUser() user, @Body() createRecipeDto: CreateRecipeDto) {
+    return this.recipesService.create(createRecipeDto, user.sub);
   }
   @Get()
   getHello() {
