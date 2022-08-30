@@ -18,13 +18,18 @@ import { User } from './users/entities/user.entity';
 import { Recipe } from './recipes/entities/recipe.entity';
 import { FavoriteModule } from './favorite/favorite.module';
 import { Favorite } from './favorite/entities/favorite.entity';
+import { FavoriteController } from './favorite/favorite.controller';
+import { FavoriteRepository } from './favorite/favorite.repository';
+import { FavoriteService } from './favorite/favorite.service';
 
 @Module({
   imports: [
     AuthorizationModule,
     UsersModule,
     RecipesModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: './config/.env',
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -43,7 +48,20 @@ import { Favorite } from './favorite/entities/favorite.entity';
     DatabaseModule,
     FavoriteModule,
   ],
-  controllers: [AppController, UsersController, RecipesController],
-  providers: [AppService, RecipesService, UsersService, RecipesRepository],
+  controllers: [
+    AppController,
+    UsersController,
+    FavoriteController,
+    RecipesController,
+  ],
+  providers: [
+    AppService,
+    RecipesService,
+    UsersService,
+    FavoriteService,
+    UsersRepository,
+    RecipesRepository,
+    FavoriteRepository,
+  ],
 })
 export class AppModule {}

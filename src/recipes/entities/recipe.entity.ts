@@ -2,7 +2,7 @@ import { User } from './../../users/entities/user.entity';
 import {
   Column,
   Entity,
-  OneToOne,
+  ManyToOne,
   BaseEntity,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -14,9 +14,8 @@ export class Recipe extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => User, (user) => user.auth0Id)
-  @Column()
-  user_id: string;
+  @ManyToOne(() => User, (user) => user.recipes)
+  user: User;
 
   @Column()
   title: string;
@@ -26,4 +25,7 @@ export class Recipe extends BaseEntity {
 
   @Column({ nullable: true })
   description: string;
+
+  @OneToMany(() => Favorite, (favorite) => favorite.recipes)
+  favorites: Favorite[];
 }

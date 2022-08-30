@@ -3,8 +3,8 @@ import { User } from 'src/users/entities/user.entity';
 import {
   ManyToOne,
   Column,
-  OneToOne,
-  JoinColumn,
+  ManyToMany,
+  JoinTable,
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -14,9 +14,10 @@ export class Favorite {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.id)
-  user?: string;
+  @ManyToOne(() => User, (user) => user.favorites)
+  user: User;
 
-  // @Column()
-  // recipe: number;
+  @ManyToOne(() => Recipe, (recipe) => recipe.favorites)
+  @JoinTable()
+  recipes: Recipe;
 }

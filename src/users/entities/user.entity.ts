@@ -16,9 +16,9 @@ export class User {
   })
   email: string;
 
-  @OneToMany(() => Recipe, (recipe) => recipe.user_id)
+  @OneToMany(() => Recipe, (recipe) => recipe.user)
   recipes: Recipe[];
 
-  // @OneToMany(() => Favorite, (favorite) => favorite.user)
-  // favorite: Favorite[];
+  @OneToMany(() => Favorite, (favorite) => favorite.user)
+  favorites: Favorite[];
 }

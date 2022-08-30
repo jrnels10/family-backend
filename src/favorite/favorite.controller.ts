@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { AuthorizationGuard } from 'src/authorization/authorization.guard';
 import { GetUser } from 'src/users/get-user.decorator';
-import { CreateFavoriteDto } from './dto/create-favorite.dto';
 import { UpdateFavoriteDto } from './dto/update-favorite.dto';
 import { FavoriteService } from './favorite.service';
 
@@ -20,10 +19,8 @@ export class FavoriteController {
 
   @UseGuards(AuthorizationGuard)
   @Post()
-  create(@GetUser() user, @Body() createFavoriteDto: CreateFavoriteDto) {
-    console.log(user);
-    const dto: CreateFavoriteDto = { ...createFavoriteDto, user_id: user.sub };
-    return this.favoriteService.create(dto);
+  create(@GetUser() user, @Body() recipe: { id: number }) {
+    return this.favoriteService.create(recipe.id, user.sub);
   }
 
   @Get()
