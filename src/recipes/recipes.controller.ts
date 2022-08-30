@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { RecipesService } from './recipes.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
@@ -23,15 +24,12 @@ export class RecipesController {
   create(@GetUser() user, @Body() createRecipeDto: CreateRecipeDto) {
     return this.recipesService.create(createRecipeDto, user.sub);
   }
+
+  @UseGuards(AuthorizationGuard)
   @Get()
-  getHello() {
-    return 'hello';
+  findAll(@Query('skip') skip?: number) {
+    return this.recipesService.findAll(skip);
   }
-  // @UseGuards(AuthorizationGuard)
-  // @Get()
-  // findAll() {
-  //   return this.recipesService.findAll();
-  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

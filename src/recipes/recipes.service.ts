@@ -18,15 +18,20 @@ export class RecipesService {
     return 'error';
   }
 
-  findAll() {
-    return `This action returns all recipes`;
+  findAll(skip) {
+    return this.recipeRepository.findManyAndCount(skip);
+    // return this.recipeRepository.find({
+    //   take: 5,
+    //   skip,
+    // });
   }
 
   async findOne(id: number) {
-    return await this.recipeRepository.find({
-      where: { id },
-      relations: ['favorites'],
-    });
+    return this.recipeRepository.findOneAndCount(id);
+    // return await this.recipeRepository.find({
+    //   where: { id },
+    //   relations: ['favorites'],
+    // });
   }
 
   update(id: number, updateRecipeDto: UpdateRecipeDto) {

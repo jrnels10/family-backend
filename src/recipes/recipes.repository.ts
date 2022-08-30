@@ -21,4 +21,21 @@ export class RecipesRepository extends Repository<Recipe> {
       .returning('id')
       .execute();
   }
+
+  async findManyAndCount(skip = 0) {
+    const found = await this.createQueryBuilder('recipe')
+      .loadRelationCountAndMap('recipe.favoriteCount', 'recipe.favorites')
+      .skip(skip)
+      .take(5)
+      .getMany();
+    return found;
+  }
+
+  async findOneAndCount(id: number) {
+    const found = await this.createQueryBuilder('recipe')
+      .loadRelationCountAndMap('recipe.favoriteCount', 'recipe.favorites')
+      .where('recipe.id = :id', { id })
+      .getMany();
+    return found;
+  }
 }
