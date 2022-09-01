@@ -35,7 +35,6 @@ export class UsersController {
   @UseGuards(AuthorizationGuard)
   @Get(':id')
   findOne(@GetUser() user) {
-    console.log('controller', user);
     return this.usersService.findOne(user.sub);
   }
 

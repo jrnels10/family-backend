@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RecipesRepository } from './recipes.repository';
 import { UsersModule } from 'src/users/users.module';
 import { UsersRepository } from 'src/users/users.repository';
+import { ImagesService } from 'src/images/images.service';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { UsersRepository } from 'src/users/users.repository';
     TypeOrmModule.forFeature([RecipesRepository, UsersRepository]),
   ],
   controllers: [RecipesController],
-  providers: [RecipesService, RecipesRepository],
+  providers: [RecipesService, ImagesService, RecipesRepository],
 })
 export class RecipesModule {}

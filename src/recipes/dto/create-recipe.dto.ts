@@ -7,6 +7,8 @@ export class CreateRecipeDto {
   title: string;
   @IsNotEmpty()
   duration: string;
+
+  image: string;
   @MaxLength(300)
   description: string;
 }

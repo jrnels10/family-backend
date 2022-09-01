@@ -3,6 +3,7 @@ import { Recipe } from './entities/recipe.entity';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/users/entities/user.entity';
+import moment from 'moment';
 
 @Injectable()
 export class RecipesRepository extends Repository<Recipe> {
@@ -14,19 +15,22 @@ export class RecipesRepository extends Repository<Recipe> {
   }
 
   async createNewRecipe(createRecipeDto: CreateRecipeDto, user: User) {
-    return await this.createQueryBuilder()
-      .insert()
-      .into(Recipe)
-      .values([{ ...createRecipeDto, user }])
-      .returning('id')
-      .execute();
+    const created = moment().format('YYYY-MM-DD HH:mm:ss');
+    const newRecipe = this.create({ ...createRecipeDto, created, user });
+    return this.save(newRecipe);
+    // return await this.createQueryBuilder()
+    //   .insert()
+    //   .into(Recipe)
+    //   .values([{ ...createRecipeDto, user }])
+    //   .returning('id')
+    //   .execute();
   }
 
   async findManyAndCount(skip = 0) {
     const found = await this.createQueryBuilder('recipe')
       .loadRelationCountAndMap('recipe.favoriteCount', 'recipe.favorites')
       .skip(skip)
-      .take(5)
+      .take(15)
       .getMany();
     return found;
   }

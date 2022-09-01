@@ -21,6 +21,8 @@ import { Favorite } from './favorite/entities/favorite.entity';
 import { FavoriteController } from './favorite/favorite.controller';
 import { FavoriteRepository } from './favorite/favorite.repository';
 import { FavoriteService } from './favorite/favorite.service';
+import { ImagesModule } from './images/images.module';
+import { ImagesService } from './images/images.service';
 
 @Module({
   imports: [
@@ -47,6 +49,7 @@ import { FavoriteService } from './favorite/favorite.service';
     TypeOrmModule.forFeature([Recipe, User, Favorite]),
     DatabaseModule,
     FavoriteModule,
+    ImagesModule,
   ],
   controllers: [
     AppController,
@@ -59,6 +62,7 @@ import { FavoriteService } from './favorite/favorite.service';
     RecipesService,
     UsersService,
     FavoriteService,
+    ImagesService,
     UsersRepository,
     RecipesRepository,
     FavoriteRepository,

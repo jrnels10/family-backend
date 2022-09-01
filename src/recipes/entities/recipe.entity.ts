@@ -14,9 +14,6 @@ export class Recipe extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.recipes)
-  user: User;
-
   @Column()
   title: string;
 
@@ -24,8 +21,17 @@ export class Recipe extends BaseEntity {
   duration: string;
 
   @Column({ nullable: true })
+  image: string;
+
+  @Column({ nullable: true })
   description: string;
 
-  @OneToMany(() => Favorite, (favorite) => favorite.recipes)
+  @Column()
+  created: string;
+
+  @ManyToOne(() => User, (user) => user.recipes)
+  user: User;
+
+  @OneToMany(() => Favorite, (favorite) => favorite.recipe)
   favorites: Favorite[];
 }

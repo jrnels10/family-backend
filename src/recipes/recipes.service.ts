@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ImagesService } from 'src/images/images.service';
 import { UsersRepository } from 'src/users/users.repository';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
@@ -9,11 +10,16 @@ export class RecipesService {
   constructor(
     private readonly recipeRepository: RecipesRepository,
     private readonly userRepository: UsersRepository,
+    private readonly imageService: ImagesService,
   ) {}
-  async create(createRecipeDto: CreateRecipeDto, auth0Id: string) {
+  async create(image: any, createRecipeDto: CreateRecipeDto, auth0Id: string) {
     const user = await this.userRepository.findOneBy({ auth0Id });
     if (user) {
-      return await this.recipeRepository.createNewRecipe(createRecipeDto, user);
+      const imageKey = await this.imageService.create(image);
+      return await this.recipeRepository.createNewRecipe(
+        { ...createRecipeDto, image: imageKey },
+        user,
+      );
     }
     return 'error';
   }

@@ -14,10 +14,16 @@ export class FavoriteService {
     private readonly userRepository: UsersRepository,
   ) {}
   async create(id: number, auth0Id: string) {
-    console.log(id);
     const user = await this.userRepository.findOneBy({ auth0Id });
+    const favorited = await this.favoriteRepository.findOneBy({
+      userId: user.id,
+      recipeId: id,
+    });
+    if (favorited) {
+      return this.remove(favorited.id);
+    }
     const recipe = await this.recipeRepository.findOneBy({ id });
-    if (user) {
+    if (user && recipe) {
       const createFavoriteDto = { user, recipe };
       return this.favoriteRepository.createNewFavorite(createFavoriteDto);
     }
@@ -35,7 +41,7 @@ export class FavoriteService {
     return `This action updates a #${id} favorite`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} favorite`;
+  async remove(id: number) {
+    return await this.favoriteRepository.delete(id);
   }
 }

@@ -8,12 +8,15 @@ import {
   Delete,
   UseGuards,
   Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { RecipesService } from './recipes.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { AuthorizationGuard } from '../authorization/authorization.guard';
 import { GetUser } from 'src/users/get-user.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('recipes')
 export class RecipesController {
@@ -21,18 +24,25 @@ export class RecipesController {
 
   @UseGuards(AuthorizationGuard)
   @Post()
-  create(@GetUser() user, @Body() createRecipeDto: CreateRecipeDto) {
-    return this.recipesService.create(createRecipeDto, user.sub);
+  @UseInterceptors(FileInterceptor('image'))
+  create(
+    @GetUser() user,
+    @Body() createRecipeDto: CreateRecipeDto,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    return this.recipesService.create(image, { ...createRecipeDto }, user.sub);
   }
 
   @UseGuards(AuthorizationGuard)
   @Get()
-  findAll(@Query('skip') skip?: number) {
+  findAll(@GetUser() user, @Query('skip') skip?: number) {
     return this.recipesService.findAll(skip);
   }
 
+  @UseGuards(AuthorizationGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@GetUser() user, @Param('id') id: string) {
+    console.log(user);
     return this.recipesService.findOne(+id);
   }
 

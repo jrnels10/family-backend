@@ -14,10 +14,16 @@ export class Favorite {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  userId: number;
+
+  @Column()
+  recipeId: number;
+
   @ManyToOne(() => User, (user) => user.favorites)
   user: User;
 
   @ManyToOne(() => Recipe, (recipe) => recipe.favorites)
   @JoinTable()
-  recipes: Recipe;
+  recipe: Recipe;
 }
