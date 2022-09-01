@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RecipesRepository } from 'src/recipes/recipes.repository';
 import { UsersRepository } from 'src/users/users.repository';
-import { CreateFavoriteDto } from './dto/create-favorite.dto';
 import { UpdateFavoriteDto } from './dto/update-favorite.dto';
-import { Favorite } from './entities/favorite.entity';
 import { FavoriteRepository } from './favorite.repository';
 
 @Injectable()
