@@ -24,6 +24,5 @@ export class Favorite {
   user: User;
 
   @ManyToOne(() => Recipe, (recipe) => recipe.favorites)
-  @JoinTable()
   recipe: Recipe;
 }

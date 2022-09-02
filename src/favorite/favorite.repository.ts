@@ -8,8 +8,12 @@ export class FavoriteRepository extends Repository<Favorite> {
   constructor(private dataSource: DataSource) {
     super(Favorite, dataSource.createEntityManager());
   }
-  test(): string {
-    return 'string';
+  async mostPopular() {
+    return await this.query(`select *
+    from recipe
+    where id in (
+            SELECT f."recipeId" AS recipeCount FROM favorite f GROUP BY 1 LIMIT 3
+      )`);
   }
 
   async createNewFavorite(createFavoriteDto: CreateFavoriteDto) {

@@ -40,6 +40,10 @@ export class RecipesService {
     // });
   }
 
+  async findMostPopular() {
+    return await this.recipeRepository.mostPopular();
+  }
+
   update(id: number, updateRecipeDto: UpdateRecipeDto) {
     return `This action updates a #${id} recipe`;
   }

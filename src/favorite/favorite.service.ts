@@ -27,8 +27,8 @@ export class FavoriteService {
     }
   }
 
-  findAll() {
-    return `This action returns all favorite`;
+  async findAll() {
+    return await this.favoriteRepository.mostPopular();
   }
 
   findOne(id: number) {

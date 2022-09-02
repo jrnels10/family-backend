@@ -26,8 +26,11 @@ export class Recipe extends BaseEntity {
   @Column({ nullable: true })
   description: string;
 
-  @Column()
+  @Column({ nullable: true })
   created: string;
+
+  @Column({ nullable: true })
+  userid: number;
 
   @ManyToOne(() => User, (user) => user.recipes)
   user: User;

@@ -33,6 +33,11 @@ export class RecipesController {
     return this.recipesService.create(image, { ...createRecipeDto }, user.sub);
   }
 
+  @Get('/popular')
+  popularRecipes() {
+    return this.recipesService.findMostPopular();
+  }
+
   @UseGuards(AuthorizationGuard)
   @Get()
   findAll(@GetUser() user, @Query('skip') skip?: number) {
