@@ -1,5 +1,5 @@
 import { Recipe } from 'src/recipes/entities/recipe.entity';
-import { Favorite } from 'src/favorite/entities/favorite.entity';
+import { Favorite } from 'src/recipes/entities/favorite.entity';
 import { Column, OneToMany, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

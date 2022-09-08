@@ -8,14 +8,24 @@ import { RecipesRepository } from './recipes.repository';
 import { UsersModule } from 'src/users/users.module';
 import { UsersRepository } from 'src/users/users.repository';
 import { ImagesService } from 'src/images/images.service';
+import { FavoriteRepository } from './favorite.repository';
 
 @Module({
   imports: [
     ConfigModule,
     DatabaseModule,
-    TypeOrmModule.forFeature([RecipesRepository, UsersRepository]),
+    TypeOrmModule.forFeature([
+      RecipesRepository,
+      UsersRepository,
+      FavoriteRepository,
+    ]),
   ],
   controllers: [RecipesController],
-  providers: [RecipesService, ImagesService, RecipesRepository],
+  providers: [
+    RecipesService,
+    ImagesService,
+    RecipesRepository,
+    FavoriteRepository,
+  ],
 })
 export class RecipesModule {}

@@ -21,6 +21,7 @@ export class FavoriteRepository extends Repository<Favorite> {
     const newFavorite = new Favorite();
     newFavorite.recipe = recipe;
     newFavorite.user = user;
-    return await this.dataSource.manager.save(newFavorite);
+    await this.dataSource.manager.save(newFavorite);
+    return recipe;
   }
 }

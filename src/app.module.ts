@@ -16,11 +16,8 @@ import { UsersService } from './users/users.service';
 import { UsersRepository } from './users/users.repository';
 import { User } from './users/entities/user.entity';
 import { Recipe } from './recipes/entities/recipe.entity';
-import { FavoriteModule } from './favorite/favorite.module';
-import { Favorite } from './favorite/entities/favorite.entity';
-import { FavoriteController } from './favorite/favorite.controller';
-import { FavoriteRepository } from './favorite/favorite.repository';
-import { FavoriteService } from './favorite/favorite.service';
+import { Favorite } from './recipes/entities/favorite.entity';
+import { FavoriteRepository } from './recipes/favorite.repository';
 import { ImagesModule } from './images/images.module';
 import { ImagesService } from './images/images.service';
 
@@ -48,20 +45,13 @@ import { ImagesService } from './images/images.service';
     }),
     TypeOrmModule.forFeature([Recipe, User, Favorite]),
     DatabaseModule,
-    FavoriteModule,
     ImagesModule,
   ],
-  controllers: [
-    AppController,
-    UsersController,
-    FavoriteController,
-    RecipesController,
-  ],
+  controllers: [AppController, UsersController, RecipesController],
   providers: [
     AppService,
     RecipesService,
     UsersService,
-    FavoriteService,
     ImagesService,
     UsersRepository,
     RecipesRepository,

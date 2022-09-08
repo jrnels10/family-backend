@@ -4,7 +4,7 @@ import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/users/entities/user.entity';
 import moment from 'moment';
-import { Favorite } from 'src/favorite/entities/favorite.entity';
+import { Favorite } from 'src/recipes/entities/favorite.entity';
 
 @Injectable()
 export class RecipesRepository extends Repository<Recipe> {
@@ -37,11 +37,11 @@ export class RecipesRepository extends Repository<Recipe> {
   }
 
   async mostPopular() {
-    return await this.query(`SELECT fav.id, recipeCount, title, image, userId
+    return await this.query(`SELECT *
     FROM (
       SELECT *
       FROM (
-            SELECT f."recipeId" AS id, count(*) AS recipeCount 
+            SELECT f."recipeId" AS id, count(*) AS likedCount 
         FROM favorite f 
         GROUP BY f."recipeId" 
         ORDER BY COUNT(id) 
@@ -50,7 +50,7 @@ export class RecipesRepository extends Repository<Recipe> {
         ) as subFav
       ) as fav, recipe
     WHERE fav.id = recipe.id
-    ORDER BY recipeCount
+    ORDER BY likedCount
     DESC`);
   }
 
@@ -91,6 +91,6 @@ where r.id = $1`,
     //   // })
     //   .andWhere('recipe.id = :id', { id })
     //   .getMany();
-    return found;
+    return found[0];
   }
 }

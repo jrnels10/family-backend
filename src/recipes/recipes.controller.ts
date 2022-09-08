@@ -33,6 +33,7 @@ export class RecipesController {
     return this.recipesService.create(image, { ...createRecipeDto }, user.sub);
   }
 
+  @UseGuards(AuthorizationGuard)
   @Get('/popular')
   popularRecipes() {
     return this.recipesService.findMostPopular();
@@ -47,17 +48,12 @@ export class RecipesController {
   @UseGuards(AuthorizationGuard)
   @Get(':id')
   findOne(@GetUser() user, @Param('id') id: string) {
-    console.log(user);
     return this.recipesService.findOne(+id);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateRecipeDto: UpdateRecipeDto) {
-  //   return this.recipesService.update(+id, updateRecipeDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.recipesService.remove(+id);
-  // }
+  @UseGuards(AuthorizationGuard)
+  @Post('/like/:id')
+  likeRecipe(@GetUser() user, @Param('id') id: number) {
+    return this.recipesService.likeRecipe(id, user.sub);
+  }
 }

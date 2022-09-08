@@ -30,6 +30,7 @@
     "aws-sdk": "^2.1206.0",
     "class-validator": "^0.13.2",
     "express-jwt": "^6.0.0",
+    "js-abbreviation-number": "^1.4.0",
     "jwks-rsa": "^2.0.3",
     "moment": "^2.29.4",
     "pg": "^8.8.0",

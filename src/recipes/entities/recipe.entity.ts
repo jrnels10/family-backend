@@ -7,7 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Favorite } from 'src/favorite/entities/favorite.entity';
+import { Favorite } from 'src/recipes/entities/favorite.entity';
 
 @Entity()
 export class Recipe extends BaseEntity {
