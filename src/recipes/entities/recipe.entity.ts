@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Favorite } from 'src/recipes/entities/favorite.entity';
+import { Ingredient } from './ingredients.entity';
 
 @Entity()
 export class Recipe extends BaseEntity {
@@ -37,4 +38,9 @@ export class Recipe extends BaseEntity {
 
   @OneToMany(() => Favorite, (favorite) => favorite.recipe)
   favorites: Favorite[];
+
+  @OneToMany(() => Ingredient, (ingredient) => ingredient.recipe, {
+    cascade: ['insert', 'update'],
+  })
+  ingredients: Ingredient[];
 }

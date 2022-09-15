@@ -21,7 +21,6 @@ export class ImagesService {
       originalname,
       mimetype,
     );
-    console.log(res);
     return res.Key;
   }
 

@@ -41,8 +41,12 @@ export class RecipesController {
 
   @UseGuards(AuthorizationGuard)
   @Get()
-  findAll(@GetUser() user, @Query('skip') skip?: number) {
-    return this.recipesService.findAll(skip);
+  findAll(
+    @GetUser() user,
+    @Query('term') term: string,
+    @Query('skip') skip?: number,
+  ) {
+    return this.recipesService.findAll(skip, term);
   }
 
   @UseGuards(AuthorizationGuard)

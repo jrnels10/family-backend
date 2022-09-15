@@ -17,8 +17,11 @@ export class RecipesService {
   ) {}
   async create(image: any, createRecipeDto: CreateRecipeDto, auth0Id: string) {
     const user = await this.userRepository.findOneBy({ auth0Id });
+    let imageKey = null;
     if (user) {
-      const imageKey = await this.imageService.create(image);
+      if (image) {
+        imageKey = await this.imageService.create(image);
+      }
       return await this.recipeRepository.createNewRecipe(
         { ...createRecipeDto, image: imageKey },
         user,
@@ -27,8 +30,8 @@ export class RecipesService {
     return 'error';
   }
 
-  findAll(skip) {
-    return this.recipeRepository.findManyAndCount(skip);
+  findAll(skip: number, term: string) {
+    return this.recipeRepository.findManyAndCount(skip, term);
     // return this.recipeRepository.find({
     //   take: 5,
     //   skip,

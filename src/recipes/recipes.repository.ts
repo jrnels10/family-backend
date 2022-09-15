@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from 'src/users/entities/user.entity';
 import moment from 'moment';
 import { Favorite } from 'src/recipes/entities/favorite.entity';
+import { Ingredient } from './entities/ingredients.entity';
 
 @Injectable()
 export class RecipesRepository extends Repository<Recipe> {
@@ -17,7 +18,18 @@ export class RecipesRepository extends Repository<Recipe> {
 
   async createNewRecipe(createRecipeDto: CreateRecipeDto, user: User) {
     const created = moment().format('YYYY-MM-DD HH:mm:ss');
-    const newRecipe = this.create({ ...createRecipeDto, created, user });
+    console.log(createRecipeDto.ingredients);
+    const newRecipe = this.create({
+      ...createRecipeDto,
+      created,
+      user,
+      ingredients: createRecipeDto.ingredients.split('||').map((ingredient) => {
+        const ing = new Ingredient();
+        ing.ingredient = ingredient;
+        return ing;
+      }),
+    });
+    console.log(newRecipe);
     return this.save(newRecipe);
     // return await this.createQueryBuilder()
     //   .insert()
@@ -27,9 +39,12 @@ export class RecipesRepository extends Repository<Recipe> {
     //   .execute();
   }
 
-  async findManyAndCount(skip = 0) {
+  async findManyAndCount(skip = 0, term = '') {
     const found = await this.createQueryBuilder('recipe')
       .loadRelationCountAndMap('recipe.favoriteCount', 'recipe.favorites')
+      .where('LOWER(recipe.title) LIKE LOWER(:term)', {
+        term: `%${term}%`,
+      })
       .skip(skip)
       .take(15)
       .getMany();
@@ -57,14 +72,19 @@ export class RecipesRepository extends Repository<Recipe> {
   async findOneAndCount(id: number) {
     const found = await this.query(
       `SELECT COALESCE(
-      ( SELECT true
-          FROM favorite f
-         WHERE f."userId" = 2 
-   AND f."recipeId" = $1
-      ), false ) AS userLiked,
-    r.*
-FROM recipe r
-where r.id = $1`,
+        ( SELECT true
+            FROM favorite f
+            WHERE f."userId" = 2 
+           AND f."recipeId" = $1
+        ), false ) AS userLiked,
+      r.*,
+  (SELECT
+     json_agg(json_build_object('id', id, 'ingredient', ingredient)) AS ingredients
+  FROM ingredient i
+  WHERE i."recipeId" = $1
+  )
+  FROM recipe r
+  where r.id = $1`,
       [id],
     );
     // const found = await this.createQueryBuilder('recipe')
